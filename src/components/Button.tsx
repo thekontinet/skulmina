@@ -1,12 +1,13 @@
-import { PropsWithChildren } from "react"
+import { ButtonHTMLAttributes } from "react"
 
 type ButtonProps = {
-    loading?: boolean,
+    loading?: boolean
 }
 
-function Button({children, loading}: PropsWithChildren<ButtonProps>) {
+function Button({children, loading, ...rest}:  ButtonHTMLAttributes<HTMLButtonElement> & ButtonProps) {
   return (
     <button 
+        {...rest}
         className="px-6 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-primary rounded-lg hover:bg-secondary focus:outline-none focus:ring focus:ring-secondary focus:ring-opacity-80"
         disabled={loading}
     >

@@ -16,9 +16,9 @@ To begin working with the "skulmina" project, follow these steps:
 1. Clone the project repository to your local development environment.
 2. Open a terminal window and navigate to the project directory.
 3. Execute the following command to install the necessary dependencies:
-   ```
-   npm install
-   ```
+```bash
+npm install
+```
 
 ## Defining Routing
 Routing is a crucial aspect of the "skulmina" project as it defines how different parts of the application are accessed. Route definitions are managed in the `src/config/routes.tsx` file. Each route includes a name, URL, corresponding component, and access permissions.

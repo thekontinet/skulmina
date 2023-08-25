@@ -11,8 +11,7 @@ function Login() {
     const queryclient = useQueryClient();
 
     const mutation = useMutation(login, {
-        onSuccess: (data) => {
-            localStorage.setItem("token", data.auth_token);
+        onSuccess: () => {
             queryclient.invalidateQueries("user");
         },
         onError: (error) => {

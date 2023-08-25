@@ -20,7 +20,10 @@ export function AuthContextProvider({ children }: React.PropsWithChildren) {
             setUser(() => response.data);
             setIsLoggedIn(true)
         }
-    }, [response.data, response.isError]);
+        else{
+            setUser(() => null)
+        }
+    }, [response.data]);
 
     return (
         <authContext.Provider value={{ user, isLoggedIn }}>
