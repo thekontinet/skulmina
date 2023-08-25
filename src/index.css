@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base{
+    :root{
+        --primary-color: #5f59f7;
+        --secondary-color: #44c2fd;
+        --light-color: #f7f7f7;
+        --lighter-color: #fdfdfd;
+    }
+
+    .heading-1{@apply text-5xl font-bold;}
+    .heading-2{@apply text-3xl font-medium;}
+    .heading-3{@apply text-2xl font-medium;}
+    .title{@apply text-xl font-light;}
+    .small{@apply text-sm font-light;}
+}
