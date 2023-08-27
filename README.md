@@ -1,120 +1,34 @@
-# skulmina Codebase Documentation
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Setup](#setup)
-- [Defining Routing](#defining-routing)
-- [Navigation Between Routes](#navigation-between-routes)
-- [Calling API](#calling-api)
+## Getting Started
 
-## Introduction
-Welcome to the comprehensive documentation for the codebase of the "skulmina" project. This document provides an in-depth overview of the core components, functions, and usage scenarios that form the foundation of the application.
+First, run the development server:
 
-## Setup
-To begin working with the "skulmina" project, follow these steps:
-
-1. Clone the project repository to your local development environment.
-2. Open a terminal window and navigate to the project directory.
-3. Execute the following command to install the necessary dependencies:
 ```bash
-npm install
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
 ```
 
-## Defining Routing
-Routing is a crucial aspect of the "skulmina" project as it defines how different parts of the application are accessed. Route definitions are managed in the `src/config/routes.tsx` file. Each route includes a name, URL, corresponding component, and access permissions.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Route Configuration
-Route configuration follows a specific structure:
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-```js
-import { About, Dashboard } from "@/pages";
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-const routes: Record<string, RouteConfig> = {
-    'home': {
-        url: "/",
-        component: () => <h1>Hello World</h1>,
-    },
-    'page.about': {
-        url: "/about",
-        component: About,
-        access: "guest", // accessible only to unauthenticated users
-    },
-    'dashboard': {
-        url: "/admin/dashboard",
-        component: Dashboard,
-        access: "auth", // accessible only to authenticated users
-    },
-    // ...other routes
-};
-```
+## Learn More
 
-### Access Permissions
-Access to routes is controlled by the `access` key. Options include:
-- `auth`: Only authenticated users can access the route.
-- `guest`: Only unauthenticated users can access the route.
-- If no `access` key is provided, the route can be accessed publicly.
+To learn more about Next.js, take a look at the following resources:
 
-## Navigation Between Routes
-For consistent and maintainable navigation, dynamic URL generation is recommended over hardcoding URLs. This approach simplifies updating URLs across the application.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-### Dynamic URL Generation
-Use the `route` function to generate URLs dynamically based on route names:
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-```js
-route('page.about') // returns: /about
-```
+## Deploy on Vercel
 
-### Implementation Example
-Utilize the `route` function along with the `react-router-dom` library for seamless navigation:
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-```js
-import route from "@/helpers/route";
-import { Link } from 'react-router-dom';
-import { routeNames } from '@/config/routes';
-
-const Navigation = () => {
-    return (
-        <nav>
-            <ul>
-                <li><Link to={route('home')}>Home</Link></li>
-                <li><Link to={route('page.about')}>About</Link></li>
-            </ul>
-        </nav>
-    );
-};
-```
-
-## Calling API
-Interacting with the API is fundamental to the "skulmina" project. API endpoints are organized within the `services/Api` folder and can be accessed through `services/Api/index.tsx`.
-
-### Creating and Fetching Posts
-Example of creating and fetching posts using API endpoints:
-
-```js 
-import request from "@/services/Api/base";
-
-export const createPost = async (data: { title: string; content: string }) =>
-    (await request.post("/posts", data)).data;
-
-export const getPosts = async () =>
-    (await request.get("/posts")).data;
-```
-
-### Utilizing the API
-The application uses the React Query library to manage API requests efficiently:
-
-```js
-import { useQuery } from "react-query";
-import { getPosts } from "@/services/Api";
-import { Post } from "@/components";
-
-function PostList() {
-    const { data: posts } = useQuery('posts', getPosts);
-
-    return (
-        <div>
-            {posts.map((post) => <Post key={post.id} post={post} />)}
-        </div>
-    )
-}
-```
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
