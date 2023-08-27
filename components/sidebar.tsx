@@ -29,8 +29,8 @@ function Sidebar() {
                         key={navitem.title}
                         href={navitem.path}
                         className={clsx([
-                            { "bg-secondary": pathname === navitem.path },
-                            "text-forground hover:bg-secondary text-sm font-bold flex items-center space-x-2 px-8 py-2",
+                            { "bg-primary": pathname === navitem.path },
+                            "text-forground hover:bg-primary text-sm font-bold flex items-center space-x-2 px-8 py-2",
                         ])}
                     >
                         <navitem.icon size={24} className="text-inherit" />
