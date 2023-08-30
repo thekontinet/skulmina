@@ -19,3 +19,10 @@ export type ExamType = {
   description?: string;
   status: boolean;
 };
+
+export type AccountType = {
+  name: string;
+  email: string;
+  password: string;
+  role: string[];
+};

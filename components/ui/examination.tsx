@@ -20,7 +20,7 @@ const ExaminationCard = ({
 
       {status ? (
         <Button className="flex-end">
-          <Link href={`/examinations/exam/${id}`}>Start Examination</Link>
+          <Link href={`/examinations/${id}`}>Start Examination</Link>
         </Button>
       ) : (
         <Button className="justify-self-end">
