@@ -37,12 +37,19 @@ const CreateUserForm = () => {
     setForm((prevForm) => ({ ...prevForm, [n]: v }));
   };
 
+  // sunbmit request
   const createUser = () => {
     setErrors(null);
     httpClient
       .post("register", form)
       .then((response) => {
         setIsopen(false);
+        setForm({
+          name: "",
+          email: "",
+          password: "",
+          role: [""],
+        });
       })
       .catch((error) => {
         if (axios.isAxiosError(error) && error?.response?.status !== 422)

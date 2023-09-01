@@ -22,8 +22,6 @@ const DashboardLayout = ({ children }: React.PropsWithChildren) => {
     return <h1>loading</h1>;
   }
 
-  console.log("user", user);
-
   return (
     <div className="">
       <main className="flex">

@@ -12,12 +12,15 @@ export type LoginCredentialsError = {
 };
 
 export type ExamType = {
-  id: number;
+  id?: number;
   title: string;
-  numberOfQuestions: string;
-  duration: number;
+  numberOfQuestions?: string;
   description?: string;
   status: boolean;
+  role?: string;
+  time_limit: number;
+  start_date: string;
+  end_date: string;
 };
 
 export type AccountType = {
