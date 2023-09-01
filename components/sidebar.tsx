@@ -23,6 +23,7 @@ const navigations = {
     { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { title: "Examinations", path: "/examinations", icon: Presentation },
     { title: "Results", path: "/results", icon: GraduationCap },
+    { title: "zzzzz", path: "/results", icon: GraduationCap },
   ],
 };
 
