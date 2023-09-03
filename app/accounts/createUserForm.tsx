@@ -26,12 +26,7 @@ import { AccountType } from "@/types";
 const CreateUserForm = () => {
   const [isopen, setIsopen] = useState<boolean>(false);
   const [errors, setErrors] = useState<AccountType | null>();
-  const [form, setForm] = useState<AccountType>({
-    name: "",
-    email: "",
-    password: "",
-    role: [""],
-  });
+  const [form, setForm] = useState<Record<string, string>>();
 
   const handleFormUpdate = (n: string, v: string) => {
     setForm((prevForm) => ({ ...prevForm, [n]: v }));
@@ -44,12 +39,7 @@ const CreateUserForm = () => {
       .post("register", form)
       .then((response) => {
         setIsopen(false);
-        setForm({
-          name: "",
-          email: "",
-          password: "",
-          role: [""],
-        });
+        setForm({});
       })
       .catch((error) => {
         if (axios.isAxiosError(error) && error?.response?.status !== 422)

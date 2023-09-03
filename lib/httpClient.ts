@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const httpClient = axios.create({
-  baseURL: "https://skuminia.rolomtech.com/api/v1",
+  baseURL: process.env.NEXT_PUBLIC_API_ENPOINT,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",

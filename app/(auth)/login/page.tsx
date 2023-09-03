@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import z from "zod";
 import useAuth from "@/hooks/useAuth";
 import { LoginCredentials, LoginCredentialsError } from "@/types";
+import ValidationError from "@/components/ui/validation-error";
 
 // export const metadata: Metadata = {
 //   title: "Login",
@@ -67,7 +68,7 @@ function Page() {
                   name="email"
                   placeholder="Email Address"
                 />
-                <span className="text-xs text-red-500">{errors?.email}</span>
+                <ValidationError message={errors?.email} />
               </div>
               <div>
                 <Label htmlFor="password" title="Password" />
@@ -78,7 +79,7 @@ function Page() {
                   name="password"
                   placeholder="Password"
                 />
-                <span className="text-xs text-red-500">{errors?.password}</span>
+                <ValidationError message={errors?.password} />
               </div>
 
               <div>

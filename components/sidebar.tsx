@@ -2,6 +2,7 @@ import clsx from "clsx";
 import {
   GraduationCap,
   LayoutDashboard,
+  LucideIcon,
   Presentation,
   Users,
 } from "lucide-react";
@@ -9,29 +10,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const navigations = {
-  admin: [
-    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { title: "Accounts", path: "/accounts", icon: Users },
-  ],
-  student: [
-    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { title: "Examinations", path: "/examinations", icon: Presentation },
-    { title: "Results", path: "/results", icon: GraduationCap },
-  ],
-  teacher: [
-    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { title: "Examinations", path: "/examinations", icon: Presentation },
-    { title: "Results", path: "/results", icon: GraduationCap },
-    { title: "zzzzz", path: "/results", icon: GraduationCap },
-  ],
-};
-
 type SidebarProps = {
-  role: keyof typeof navigations;
+  navigations: { title: string; path: string; icon: LucideIcon }[];
 };
 
-function Sidebar({ role }: SidebarProps) {
+function Sidebar({ navigations }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -41,19 +24,27 @@ function Sidebar({ role }: SidebarProps) {
       </header>
 
       <div className="space-y-2 overflow-hidden">
-        {navigations[role].map((navitem) => (
-          <Link
-            key={navitem.title}
-            href={navitem.path}
-            className={clsx([
-              { "bg-primary": pathname.match(navitem.path) },
-              "text-forground hover:bg-primary text-sm font-bold flex items-center space-x-2 px-8 py-2 w-full",
-            ])}
-          >
-            <navitem.icon size={24} className="text-inherit" />
-            <span className="py-2">{navitem.title}</span>
-          </Link>
-        ))}
+        {navigations.map((navitem) => {
+          const isActive = pathname.match(navitem.path);
+          return (
+            <Link
+              key={navitem.title}
+              href={navitem.path}
+              className={clsx([
+                {
+                  "bg-primary text-background font-bold": isActive,
+                },
+                {
+                  "text-forground hover:bg-muted font-light": !isActive,
+                },
+                "text-xs flex items-center space-x-2 px-8 py-2 w-full",
+              ])}
+            >
+              <navitem.icon size={18} className="text-inherit" />
+              <span className="py-2">{navitem.title}</span>
+            </Link>
+          );
+        })}
       </div>
     </aside>
   );

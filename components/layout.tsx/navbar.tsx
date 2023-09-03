@@ -12,6 +12,7 @@ import {
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarFallback, AvatarImage } from "../ui/avatar";
 import { UserCredentials } from "@/types";
+import { DarkModeSwitch } from "../ui/darkmode-switch";
 
 type NavbarProps = {
   logout?: () => void;
@@ -26,7 +27,8 @@ const Navbar = ({ logout, collapse, user }: NavbarProps) => {
         <Button onClick={collapse} size={"sm"} variant={"secondary"}>
           <Menu size={18} />
         </Button>
-        <div className="ml-auto">
+        <div className="ml-auto space-x-4 flex items-center">
+          <DarkModeSwitch />
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar className="ml-auto cursor-pointer">
