@@ -4,7 +4,6 @@ import Sidebar from "@/components/sidebar";
 import useAuth from "@/hooks/useAuth";
 import { useState } from "react";
 import Navbar from "./navbar";
-import clsx from "clsx";
 import {
   BookOpenCheck,
   GraduationCap,
@@ -21,13 +20,13 @@ const navigations = {
   ],
   student: [
     { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { title: "Examinations", path: "/examinations", icon: Presentation },
+    { title: "Quizzes", path: "/quizzes", icon: Presentation },
     { title: "Results", path: "/results", icon: GraduationCap },
   ],
   teacher: [
     { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { title: "Qestion Bank", path: "/questions", icon: BookOpenCheck },
-    { title: "Examinations", path: "/examinations", icon: Presentation },
+    { title: "Quizzes", path: "/quizzes", icon: Presentation },
     { title: "Results", path: "/results", icon: GraduationCap },
     { title: "zzzzz", path: "/results", icon: GraduationCap },
   ],
@@ -59,12 +58,13 @@ const DashboardLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <div className="">
       <main className="flex">
-        <div className={clsx("transition-[width] max-w-[250px]", display)}>
-          <Sidebar navigations={navigations[user.role]} />
-        </div>
+        <Sidebar navigations={navigations[user.role]} />
         <section className="w-full">
-          <Navbar collapse={collaspe} logout={logout} />
-          {children}
+          <Navbar logout={logout} />
+          <header className="bg-primary h-56"></header>
+          <div className="-translate-y-48 mx-auto px-2 md:px-4 lg:px-12">
+            {children}
+          </div>
         </section>
       </main>
     </div>
