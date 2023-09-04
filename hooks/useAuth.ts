@@ -1,5 +1,5 @@
 import httpClient from "@/lib/httpClient";
-import { LoginCredentials, LoginCredentialsError } from "@/types";
+import { AccountType, LoginCredentials, LoginCredentialsError } from "@/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -19,11 +19,17 @@ type UseAuthArgs = {
 
 function useAuth({ middleware, redirectIfAuthenticated }: UseAuthArgs) {
   const router = useRouter();
-  const getAuthUser = () => httpClient.get("/user").then((res) => res.data);
+  const getAuthUser = () =>
+    httpClient.get("/user").then((res) => res.data.data);
 
-  const { data: user, error, mutate } = useSWR("/api/user", getAuthUser);
+  const {
+    data: user,
+    error,
+    mutate,
+  } = useSWR<AccountType>("/api/user", getAuthUser);
 
   const login = async ({ setErrors, data }: LoginArgs) => {
+    setErrors(undefined);
     httpClient
       .post("/login", data)
       .then((res) => {

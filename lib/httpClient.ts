@@ -1,17 +1,31 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
+import { UseFormSetError } from "react-hook-form";
 
 const httpClient = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/v1',
-    headers: {
-        "Content-Type" : "application/json",
-        "Accept" : "application/json",
-    }
-})
+  baseURL: process.env.NEXT_PUBLIC_API_ENPOINT,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
 
-httpClient.interceptors.request.use(function(config){
-    const token = localStorage.getItem('token')
-    config.headers['Authorization'] = `Bearer ${token}`
-    return config
-})
+httpClient.interceptors.request.use(function (config) {
+  const token = localStorage.getItem("token");
+  config.headers["Authorization"] = `Bearer ${token}`;
+  return config;
+});
 
-export default httpClient
+export const handleValidationError = (
+  err: unknown,
+  setError: UseFormSetError<any>
+) => {
+  if (isAxiosError(err) && err.response?.status === 422) {
+    Object.keys(err.response.data.errors).forEach((key) => {
+      setError(key, {
+        message: err?.response?.data.errors[key][0] as string,
+      });
+    });
+  }
+};
+
+export default httpClient;

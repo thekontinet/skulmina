@@ -1,3 +1,5 @@
+import { AccountType } from "@/types";
+
 export const Questions = [
   {
     id: 1,
@@ -123,5 +125,48 @@ export const Questions = [
       { value: "node file-name.js" },
       { value: "execute file-name.js" },
     ],
+  },
+];
+
+export const Users: Pick<AccountType, "name" | "email" | "role">[] = [
+  {
+    name: "Alice Johnson",
+    email: "alice.johnson@example.com",
+    role: ["student"],
+  },
+  {
+    name: "Bob Smith",
+    email: "bob.smith@example.com",
+    role: ["teacher"],
+  },
+  {
+    name: "Charlie Brown",
+    email: "charlie.brown@example.com",
+    role: ["student"],
+  },
+  {
+    name: "David Lee",
+    email: "david.lee@example.com",
+    role: ["teacher"],
+  },
+  {
+    name: "Emma Davis",
+    email: "emma.davis@example.com",
+    role: ["student"],
+  },
+  {
+    name: "Frank Wilson",
+    email: "frank.wilson@example.com",
+    role: ["teacher"],
+  },
+  {
+    name: "Grace Martinez",
+    email: "grace.martinez@example.com",
+    role: ["student"],
+  },
+  {
+    name: "Helen Taylor",
+    email: "helen.taylor@example.com",
+    role: ["student"],
   },
 ];
