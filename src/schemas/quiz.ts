@@ -24,7 +24,12 @@ export const quizFormSchema = z.object({
 });
 
 export const QuestionFormSchema = z.object({
-  description: z.string().min(1, { message: "Description required" }),
-  type: z.string(),
-  options: z.array(z.string().min(2, { message: "Min 2 chars" })),
+  questions: z.array(
+    z.object({
+      description: z.string().min(1, { message: "Description required" }),
+      options: z
+        .array(z.string().min(2, { message: "Min 2 chars" }))
+        .min(1, { message: "Please enter atleast one answer" }),
+    })
+  ),
 });

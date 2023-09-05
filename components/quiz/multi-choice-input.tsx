@@ -1,13 +1,34 @@
-import { UseFormReturn, useFieldArray } from "react-hook-form";
+import {
+  FieldArrayWithId,
+  UseFormReturn,
+  useFieldArray,
+} from "react-hook-form";
 import { FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Minus, Plus } from "lucide-react";
+import { z } from "zod";
+import { QuestionFormSchema } from "@/src/schemas/quiz";
 
-function MultiChoiceInput({ form }: { form: UseFormReturn<any> }) {
+type MultiChoiceInputProps = {
+  form: UseFormReturn<z.infer<typeof QuestionFormSchema>, any, undefined>;
+  index: number;
+  field?: FieldArrayWithId<
+    z.infer<typeof QuestionFormSchema>,
+    "questions",
+    "id"
+  >;
+  name: string;
+};
+
+function MultiChoiceInput({
+  form,
+  index: parentIndex,
+  name,
+}: MultiChoiceInputProps) {
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "options",
+    name: `questions.${parentIndex}.${name}`,
   });
 
   return (
@@ -15,13 +36,13 @@ function MultiChoiceInput({ form }: { form: UseFormReturn<any> }) {
       {fields.map((field, index) => (
         <FormField
           key={field.id}
-          name={`options.${index}`}
+          name={`questions.${parentIndex}.${name}.${index}`}
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormLabel>Option {index + 1}</FormLabel>
               <div className="flex">
                 <Button
-                  className="rounded-l-none"
+                  className="rounded-r-none border-r-0"
                   variant={"outline"}
                   type="button"
                   onClick={() => remove(index)}
@@ -30,7 +51,7 @@ function MultiChoiceInput({ form }: { form: UseFormReturn<any> }) {
                 </Button>
                 <Input
                   {...field}
-                  className="rounded-r-none"
+                  className="rounded-l-none border-l-0"
                   placeholder={`Choice ${index + 1}`}
                 />
               </div>
