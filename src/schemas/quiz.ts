@@ -28,7 +28,12 @@ export const QuestionFormSchema = z.object({
     z.object({
       description: z.string().min(1, { message: "Description required" }),
       options: z
-        .array(z.string().min(2, { message: "Min 2 chars" }))
+        .array(
+          z.object({
+            value: z.string().min(2, { message: "Min 2 chars" }),
+            is_correct: z.boolean(),
+          })
+        )
         .min(1, { message: "Please enter atleast one answer" }),
     })
   ),
