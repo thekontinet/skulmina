@@ -8,15 +8,31 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
-import { UseFormReturn, useFieldArray } from "react-hook-form";
+import {
+  FieldArrayWithId,
+  UseFormReturn,
+  useFieldArray,
+} from "react-hook-form";
 import { Button } from "../ui/button";
 import MultiChoiceInput from "./multi-choice-input";
+import { QuestionFormSchema } from "@/src/schemas/quiz";
+import { z } from "zod";
 
-function QuestionForm({ form }: { form: UseFormReturn<any> }) {
+type QuestionFormProps = {
+  form: UseFormReturn<z.infer<typeof QuestionFormSchema>, any, undefined>;
+  index: number;
+  field?: FieldArrayWithId<
+    z.infer<typeof QuestionFormSchema>,
+    "questions",
+    "id"
+  >;
+};
+
+function QuestionForm({ form, index }: QuestionFormProps) {
   return (
     <div className="space-y-3">
       <FormField
-        name="description"
+        name={`questions.${index}.description`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Description</FormLabel>
@@ -29,25 +45,11 @@ function QuestionForm({ form }: { form: UseFormReturn<any> }) {
           </FormItem>
         )}
       />
+      <MultiChoiceInput name="options" form={form} index={index} />
       <FormField
-        name="type"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Answer Type</FormLabel>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Answer Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="multi-choice">Multi Choice</SelectItem>
-                <SelectItem value="short-answer">Short Answer</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
+        name={`questions.${index}.options.root`}
+        render={({ field }) => <FormMessage className="text-primary" />}
       />
-      <MultiChoiceInput form={form} />
     </div>
   );
 }
