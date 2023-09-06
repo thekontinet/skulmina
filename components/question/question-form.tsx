@@ -14,7 +14,7 @@ import {
   useFieldArray,
 } from "react-hook-form";
 import { Button } from "../ui/button";
-import MultiChoiceInput from "./multi-choice-input";
+import MultiChoiceInput from "../quiz/multi-choice-input";
 import { QuestionFormSchema } from "@/src/schemas/quiz";
 import { z } from "zod";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import DashboardLayout from "@/components/layout.tsx/dashboardLayout";
-import QuestionForm from "@/components/quiz/question-form";
+import QuestionForm from "@/components/question/question-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
