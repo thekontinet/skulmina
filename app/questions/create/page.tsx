@@ -34,7 +34,7 @@ function QuestionCreate() {
       </Typography>
       <Card>
         <CardContent>
-          <QuestionForm form={form} />
+          {/* <QuestionForm form={form} /> */}
         </CardContent>
       </Card>
     </DashboardLayout>
