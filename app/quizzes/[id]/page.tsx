@@ -92,7 +92,12 @@ function page() {
       ))}
 
       <Button
-        onClick={() => append({ description: "", options: [] })}
+        onClick={() =>
+          append({
+            description: "",
+            options: [{ value: "", is_correct: false }],
+          })
+        }
         variant={"outline"}
         className="w-full mt-4"
       >
