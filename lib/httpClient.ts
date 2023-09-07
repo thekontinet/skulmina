@@ -10,8 +10,10 @@ const httpClient = axios.create({
 });
 
 httpClient.interceptors.request.use(function (config) {
-  const token = localStorage.getItem("token");
-  config.headers["Authorization"] = `Bearer ${token}`;
+  if (undefined !== window && window.localStorage) {
+    const token = JSON.parse(window.localStorage.getItem("token") || "");
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
   return config;
 });
 

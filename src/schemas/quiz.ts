@@ -23,18 +23,37 @@ export const quizFormSchema = z.object({
   }),
 });
 
+export const optionSchema = z.object({
+  value: z.string().min(1, { message: "The option value is required" }),
+  is_correct: z.boolean(),
+});
+
 export const QuestionFormSchema = z.object({
   questions: z.array(
     z.object({
-      description: z.string().min(1, { message: "Description required" }),
+      description: z.string().min(1, { message: "the description required" }),
       options: z
-        .array(
-          z.object({
-            value: z.string().min(2, { message: "Min 2 chars" }),
-            is_correct: z.boolean(),
-          })
+        .array(optionSchema)
+        .nonempty({ message: "Please add atleast one answer to this question" })
+        .refine(
+          // Ensure there is at least one correct option
+          (options) => {
+            return options.some((option) => option.is_correct);
+          },
+          {
+            message: "At least one option must be marked as correct.",
+          }
         )
-        .min(1, { message: "Please enter atleast one answer" }),
+        .refine(
+          (options) => {
+            // Ensure options are unique
+            const values = options.map((option) => option.value);
+            return new Set(values).size === values.length;
+          },
+          {
+            message: "Options must be unique within a question.",
+          }
+        ),
     })
   ),
 });
