@@ -3,53 +3,70 @@
 import DashboardLayout from "@/components/layout.tsx/dashboardLayout";
 import QuestionForm from "@/components/quiz/question-form";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { handleValidationError } from "@/lib/httpClient";
+import { createQuestion } from "@/src/api/question";
 import { getQuizzes } from "@/src/api/quiz";
 import { QuestionFormSchema } from "@/src/schemas/quiz";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, X } from "lucide-react";
-import { useParams } from "next/navigation";
-import React, { LegacyRef, useRef, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import useSwr from "swr";
 import { z } from "zod";
 
+const initialData = {
+  questions: [
+    {
+      description: "",
+      options: [],
+    },
+  ],
+};
+
 function page() {
   const { id } = useParams();
-
+  const router = useRouter();
   const { data: quiz } = useSwr(["quiz", id], () => getQuizzes(id as string));
-
-  const initialData = {
-    questions: [
-      {
-        description: "",
-        options: [],
-      },
-    ],
-  };
+  const [localStorageQuestion, setLocalStorageQuestion] = useLocalStorage(
+    `question-${id}`,
+    initialData
+  );
 
   const form = useForm<z.infer<typeof QuestionFormSchema>>({
     resolver: zodResolver(QuestionFormSchema),
-    defaultValues:
-      JSON.parse(localStorage.getItem(`quests-${id}`) || "[]") || initialData,
+    defaultValues: localStorageQuestion,
   });
 
-  React.useEffect(() => {
+  // Autosave form state while form is changing
+  useEffect(() => {
     const subscription = form.watch((value) => {
-      localStorage.setItem(`quests-${id}`, JSON.stringify(value));
+      setLocalStorageQuestion(value);
     });
     return () => subscription.unsubscribe();
   }, [form.watch]);
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "questions",
-  });
+  const onSubmit = (data: z.infer<typeof QuestionFormSchema>) => {
+    const transformedData = data.questions.map((question) => ({
+      description: question.description,
+      options: question.options
+        .filter((op) => !op.is_correct)
+        .map((d) => d.value),
+      answers: question.options
+        .filter((op) => op.is_correct)
+        .map((d) => d.value),
+      examination_id: id,
+    }));
 
-  const onSubmit = (data: {}) => {
-    console.log(JSON.stringify(data));
+    Promise.allSettled(
+      transformedData.map((question) => createQuestion(question))
+    )
+      .then((questions) => {
+        router.refresh();
+      })
+      .catch((err) => handleValidationError(err, form.setError));
   };
 
   return (
@@ -69,7 +86,9 @@ function page() {
         </CardContent>
       </Card>
 
-      {fields.map((field, index) => (
+      <QuestionForm form={form} onSubmit={onSubmit} />
+
+      {/* {fields.map((field, index) => (
         <Card key={field.id} className="my-4 p-2">
           <CardHeader className="flex-row items-center">
             <Typography variant="h4">Question {1 + index}</Typography>
@@ -84,25 +103,12 @@ function page() {
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <QuestionForm form={form} index={index} field={field} />
+                
               </form>
             </Form>
           </CardContent>
         </Card>
-      ))}
-
-      <Button
-        onClick={() =>
-          append({
-            description: "",
-            options: [{ value: "", is_correct: false }],
-          })
-        }
-        variant={"outline"}
-        className="w-full mt-4"
-      >
-        <Plus size={12} />
-      </Button>
+      ))} */}
     </DashboardLayout>
   );
 }

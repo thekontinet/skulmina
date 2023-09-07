@@ -30,7 +30,7 @@ function MultiChoiceInput({
 }: MultiChoiceInputProps) {
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: `questions.${parentIndex}.${name}`,
+    name: `questions.${parentIndex}.${name}` as any,
   });
 
   return (
