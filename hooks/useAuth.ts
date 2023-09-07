@@ -35,14 +35,16 @@ function useAuth({ middleware, redirectIfAuthenticated }: UseAuthArgs) {
     httpClient
       .post("/login", data)
       .then((res) => {
-        setLoginTokenToLocalStorage(res.data.auth_token);
+        setLoginTokenToLocalStorage(res?.data?.auth_token);
         mutate();
       })
       .catch((error) => {
         if (axios.isAxiosError(error) && error?.response?.status !== 422)
           throw error;
 
-        setErrors(error.response.data.errors);
+        setErrors(error?.response?.data?.errors);
+        console.log(error);
+
       });
   };
 

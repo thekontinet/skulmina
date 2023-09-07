@@ -2,7 +2,7 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { UseFormReturn, useFieldArray } from "react-hook-form";
 import { Button } from "../ui/button";
-import MultiChoiceInput from "./multi-choice-input";
+import MultiChoiceInput from "../quiz/multi-choice-input";
 import { QuestionFormSchema } from "@/src/schemas/quiz";
 import { z } from "zod";
 import { Card, CardContent, CardHeader } from "../ui/card";
@@ -11,7 +11,6 @@ import { Plus, X } from "lucide-react";
 
 type QuestionFormProps = {
   form: UseFormReturn<z.infer<typeof QuestionFormSchema>, any, undefined>;
-  onSubmit: (data: z.infer<typeof QuestionFormSchema>) => void;
   limit?: number;
 };
 

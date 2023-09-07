@@ -21,6 +21,13 @@ export type ExamType = {
   questions?: string[];
 };
 
+export type QuestionType = {
+  id: number;
+  description: string;
+  options?: string[];
+  answers?: string[];
+};
+
 export type AccountType = {
   name: string;
   email: string;
