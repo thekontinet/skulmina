@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import useSWR from "swr";
+import { useLocalStorage } from "./useLocalStorage";
 
 type LoginArgs = {
   setErrors: React.Dispatch<
@@ -19,6 +20,7 @@ type UseAuthArgs = {
 
 function useAuth({ middleware, redirectIfAuthenticated }: UseAuthArgs) {
   const router = useRouter();
+  const [, setLoginTokenToLocalStorage] = useLocalStorage("token", "");
   const getAuthUser = () =>
     httpClient.get("/user").then((res) => res.data.data);
 
@@ -33,7 +35,7 @@ function useAuth({ middleware, redirectIfAuthenticated }: UseAuthArgs) {
     httpClient
       .post("/login", data)
       .then((res) => {
-        localStorage.setItem("token", res.data.auth_token);
+        setLoginTokenToLocalStorage(res.data.auth_token);
         mutate();
       })
       .catch((error) => {
