@@ -11,7 +11,6 @@ import { Plus, X } from "lucide-react";
 
 type QuestionFormProps = {
   form: UseFormReturn<z.infer<typeof QuestionFormSchema>, any, undefined>;
-  onSubmit: (data: z.infer<typeof QuestionFormSchema>) => void;
   limit?: number;
 };
 

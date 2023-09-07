@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import DashboardLayout from "@/components/layout.tsx/dashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,8 +6,19 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ExamCardSkeleton from "@/components/quiz/skeleton";
 import QuestionTable from "@/components/question/question-table";
+import useSwr from "swr";
+import { getQuestions } from "@/src/api/question";
+import { ApiResponse, QuestionType } from "@/types";
 
 function Question() {
+  const {
+    data: questions,
+    mutate,
+    isLoading
+  } = useSwr<ApiResponse<QuestionType[]>>("questions", () => getQuestions());
+
+  console.log(questions)
+
   return (
     <DashboardLayout>
       <Card className="mb-6">
@@ -24,7 +36,7 @@ function Question() {
         </CardContent>
       </Card>
 
-      <QuestionTable/>
+      <QuestionTable questions={questions?.data || []}/>
     </DashboardLayout>
   );
 }

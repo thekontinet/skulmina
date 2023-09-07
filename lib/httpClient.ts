@@ -11,7 +11,7 @@ const httpClient = axios.create({
 
 httpClient.interceptors.request.use(function (config) {
   if (undefined !== window && window.localStorage) {
-    const token = JSON.parse(window.localStorage.getItem("token") || "");
+    const token = JSON.parse(window.localStorage.getItem("token") as string);
     config.headers["Authorization"] = `Bearer ${token}`;
   }
   return config;

@@ -14,26 +14,21 @@ import { Button } from "../ui/button";
 import ConfirmButton from "../widget/confirm-button";
 import Question from "@/app/questions/page";
 import { Checkbox } from "../ui/checkbox";
+import { QuestionType } from "@/types";
+import { useRouter } from "next/navigation";
+import { deleteQuestion } from "@/src/api/question";
 
-function QuestionTable() {
-  const Questions = [
-    {
-      id: 1,
-      question: "what is HTML?",
-    },
-    {
-      id: 2,
-      question: "what is CSS?",
-    },
-    {
-      id: 3,
-      question: "what is 2 + 2?",
-    },
-    {
-      id: 4,
-      question: "what is JS?",
-    },
-  ];
+
+
+
+function QuestionTable({questions}: {questions:QuestionType[]}) {
+
+  const router = useRouter();
+
+  const handleDelete = (id: number | string) => {
+    deleteQuestion(id).then((res) => router.push("/questions"))
+}
+
   return (
     <Card>
       <CardContent>
@@ -52,16 +47,16 @@ function QuestionTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Questions.map(({ id, question }) => (
+            {questions && questions.map(({ id, description }) => (
               <>
                 <TableRow>
                   <TableCell className="flex items-center gap-1">
                     <Checkbox /> {id}
                   </TableCell>
 
-                  <TableCell>{question}</TableCell>
+                  <TableCell>{description}</TableCell>
                   <TableCell className="flex items-center justify-end gap-2">
-                    <ConfirmButton variant="destructive">
+                    <ConfirmButton onConfirm={() => handleDelete(id)} variant="destructive">
                       <Trash2 size={14} />
                     </ConfirmButton>
 
