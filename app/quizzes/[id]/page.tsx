@@ -8,7 +8,7 @@ import Typography from "@/components/ui/typography";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { handleValidationError } from "@/lib/httpClient";
 import notify from "@/lib/notify";
-import { createQuestion } from "@/src/api/question";
+import { createManyQuestions, createQuestion } from "@/src/api/question";
 import { getQuizzes } from "@/src/api/quiz";
 import { QuestionFormSchema } from "@/src/schemas/quiz";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,29 +67,15 @@ function page() {
 
   const onSubmit = async (data: z.infer<typeof QuestionFormSchema>) => {
     try {
-      // separate the option
-      const transformedData = data.questions.map((question) => ({
-        description: question.description,
-        options: question.options
-          .filter((op) => !op.is_correct)
-          .map((d) => d.value),
-        answers: question.options
-          .filter((op) => op.is_correct)
-          .map((d) => d.value),
-        examination_id: id,
-      }));
-
-      await Promise.allSettled(
-        transformedData.map((question) => createQuestion(question))
-      );
-
-      notify.success("saved");
-      mutate("quizzes");
+      await createManyQuestions(data, id as string);
       removeLocalStorageQuestion();
+      mutate();
+      notify.success("saved");
       router.push("/quizzes");
       return;
     } catch (err) {
       handleValidationError(err, form.setError);
+      console.log(err);
     }
   };
 
