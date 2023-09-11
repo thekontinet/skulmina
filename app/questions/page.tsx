@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import DashboardLayout from "@/components/layout.tsx/dashboardLayout";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,11 @@ function Question() {
   const {
     data: questions,
     mutate,
-    isLoading,
+    isLoading
   } = useSwr<ApiResponse<QuestionType[]>>("questions", () => getQuestions());
+
+
+
 
   return (
     <DashboardLayout>
@@ -26,7 +29,7 @@ function Question() {
         </CardHeader>
       </Card>
 
-      <QuestionTable questions={questions?.data || []} />
+      <QuestionTable questions={questions?.data || []}/>
     </DashboardLayout>
   );
 }

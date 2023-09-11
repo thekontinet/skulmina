@@ -19,16 +19,12 @@ import { useRouter } from "next/navigation";
 import { deleteQuestion } from "@/src/api/question";
 import Link from "next/link";
 
-
-
-
-function QuestionTable({questions}: {questions:QuestionType[]}) {
-
+function QuestionTable({ questions }: { questions: QuestionType[] }) {
   const router = useRouter();
 
   const handleDelete = (id: number | string) => {
-    deleteQuestion(id).then((res) => router.push("/questions"))
-}
+    deleteQuestion(id).then((res) => router.push("/questions"));
+  };
 
   return (
     <Card>
@@ -37,9 +33,10 @@ function QuestionTable({questions}: {questions:QuestionType[]}) {
           <TableCaption>A list of questions.</TableCaption>
           <TableHeader className="font-bold uppercase tracking-widest">
             <TableRow>
-              <TableHead  className="flex items-center justify-start gap-3">
-                ID <ConfirmButton>
-                  <PlusIcon size={14}/> bulk action
+              <TableHead className="flex items-center justify-start gap-3">
+                ID{" "}
+                <ConfirmButton>
+                  <PlusIcon size={14} /> bulk action
                 </ConfirmButton>
               </TableHead>
 
@@ -48,26 +45,34 @@ function QuestionTable({questions}: {questions:QuestionType[]}) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {questions && questions.map(({ id, description }) => (
-              <>
-                <TableRow>
-                  <TableCell className="flex items-center gap-1">
-                    <Checkbox /> {id}
-                  </TableCell>
+            {questions &&
+              questions.map(({ id, description }) => (
+                <>
+                  <TableRow>
+                    <TableCell className="flex items-center gap-1">
+                      <Checkbox /> {id}
+                    </TableCell>
 
-                  <TableCell>{description}</TableCell>
-                  <TableCell className="flex items-center justify-end gap-2">
-                    <ConfirmButton onConfirm={() => handleDelete(id)} variant="destructive">
-                      <Trash2 size={14} />
-                    </ConfirmButton>
+                    <TableCell>{description}</TableCell>
+                    <TableCell className="flex items-center justify-end gap-2">
+                      <ConfirmButton
+                        onConfirm={() => handleDelete(id)}
+                        variant="destructive"
+                      >
+                        <Trash2 size={14} />
+                      </ConfirmButton>
 
-                    <Link href={`/questions/${id}`}>
-                      <Edit3 size={14} />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              </>
-            ))}
+                      <Link
+                        className="rounded bg-primary px-4 py-3 text-background
+                    "
+                        href={`/questions/${id}`}
+                      >
+                        <Edit3 size={14} />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))}
           </TableBody>
         </Table>
       </CardContent>
