@@ -29,7 +29,7 @@ const QuizCard = ({ quiz, onDelete }: QuizCardProps) => {
   };
 
   return (
-    <Card className="bg-secondary">
+    <Card className="bg-secondary flex flex-col justify-between">
       <CardHeader>
         <Typography variant="h4">{quiz.title}</Typography>
       </CardHeader>

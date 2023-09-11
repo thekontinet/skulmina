@@ -8,10 +8,10 @@ import {
   BookOpenCheck,
   GraduationCap,
   LayoutDashboard,
-  Loader,
   Presentation,
   Users,
 } from "lucide-react";
+import Loader from "../ui/loader";
 
 const navigations = {
   admin: [
@@ -45,14 +45,7 @@ const DashboardLayout = ({ children }: React.PropsWithChildren) => {
   };
 
   if (!user) {
-    return (
-      <div className="h-screen grid place-items-center uppercase text-center">
-        <div>
-          <Loader size={24} className="animate-spin mx-auto" />
-          <p className="text-sm mt-3">Please Wait...</p>
-        </div>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
