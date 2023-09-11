@@ -17,6 +17,7 @@ import { Checkbox } from "../ui/checkbox";
 import { QuestionType } from "@/types";
 import { useRouter } from "next/navigation";
 import { deleteQuestion } from "@/src/api/question";
+import Link from "next/link";
 
 
 
@@ -60,9 +61,9 @@ function QuestionTable({questions}: {questions:QuestionType[]}) {
                       <Trash2 size={14} />
                     </ConfirmButton>
 
-                    <Button variant="default">
+                    <Link href={`/questions/${id}`}>
                       <Edit3 size={14} />
-                    </Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               </>

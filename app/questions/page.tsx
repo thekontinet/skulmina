@@ -1,10 +1,8 @@
-"use client"
-import React from "react";
+"use client";
 import DashboardLayout from "@/components/layout.tsx/dashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import ExamCardSkeleton from "@/components/quiz/skeleton";
 import QuestionTable from "@/components/question/question-table";
 import useSwr from "swr";
 import { getQuestions } from "@/src/api/question";
@@ -14,10 +12,8 @@ function Question() {
   const {
     data: questions,
     mutate,
-    isLoading
+    isLoading,
   } = useSwr<ApiResponse<QuestionType[]>>("questions", () => getQuestions());
-
-  console.log(questions)
 
   return (
     <DashboardLayout>
@@ -28,15 +24,9 @@ function Question() {
             <Link href={"/questions/create"}>Create Question</Link>
           </Button>
         </CardHeader>
-        <CardContent className="grid gap-2 md:grid-cols-3 w-full">
-          {/* {isLoading && <ExamCardSkeleton count={6} />}
-          {exams?.data?.map((exam) => (
-            <QuizCard key={exam.id} quiz={exam} onDelete={handleDelete} />
-          ))} */}
-        </CardContent>
       </Card>
 
-      <QuestionTable questions={questions?.data || []}/>
+      <QuestionTable questions={questions?.data || []} />
     </DashboardLayout>
   );
 }
