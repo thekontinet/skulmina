@@ -13,6 +13,7 @@ import ConfirmButton from "../widget/confirm-button";
 import { Checkbox } from "../ui/checkbox";
 import { QuestionType } from "@/types";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type QuestionTableProps = {
   questions: QuestionType[];
@@ -21,6 +22,7 @@ type QuestionTableProps = {
 };
 
 function QuestionTable({ questions, loading, onDelete }: QuestionTableProps) {
+
   return (
     <Card>
       <CardContent className="relative">
@@ -55,8 +57,13 @@ function QuestionTable({ questions, loading, onDelete }: QuestionTableProps) {
                     <Trash2 size={14} />
                   </ConfirmButton>
 
-                  <Button variant="default" size={"sm"}>
-                    <Edit3 size={14} />
+                  <Button
+                    variant="default"
+                    size={"sm"}
+                  >
+                    <Link href={`questions/${id}`}>
+                      <Edit3 size={14} />
+                    </Link>
                   </Button>
                 </TableCell>
               </TableRow>

@@ -10,15 +10,17 @@ import useSwr from "swr";
 function QuestionEditPage() {
   const { id } = useParams();
   const { data: question, isLoading } = useSwr(["question", id], () =>
-    getQuestions(id as string)
+    getQuestions(id as string, {id})
   );
 
-  console.log(id)
+  console.log(question.data)
   return (
     <DashboardLayout>
       <Card>
-        <Typography>hello</Typography>
-        <CardContent></CardContent>
+        <Typography>{question?.data.description}</Typography>
+        <CardContent>
+          form
+        </CardContent>
       </Card>
     </DashboardLayout>
   );
