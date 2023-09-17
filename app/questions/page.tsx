@@ -54,6 +54,7 @@ function Question() {
           <div className="mt-4 flex items-center justify-center gap-1">
             {questions?.meta?.links?.map((link, index) => (
               <Button
+                key={index}
                 disabled={link?.active}
                 variant={link?.active ? "outline" : "ghost"}
                 onClick={() => setpageFromUrl(link?.url)}
