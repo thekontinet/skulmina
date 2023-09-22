@@ -1,17 +1,45 @@
+"use client";
 import clsx from "clsx";
-import { LucideIcon, Menu } from "lucide-react";
+import {
+  BookOpenCheck,
+  GraduationCap,
+  LayoutDashboard,
+  LucideIcon,
+  Menu,
+  Presentation,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { TUser } from "@/model/user";
 
 type SidebarProps = {
-  navigations: { title: string; path: string; icon: LucideIcon }[];
+  user: TUser;
 };
 
-function Sidebar({ navigations }: SidebarProps) {
+const sidebarNavigations = {
+  admin: [
+    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { title: "Accounts", path: "/accounts", icon: Users },
+  ],
+  student: [
+    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { title: "Quizzes", path: "/quizzes", icon: Presentation },
+    { title: "Results", path: "/results", icon: GraduationCap },
+  ],
+  teacher: [
+    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { title: "Qestion Bank", path: "/questions", icon: BookOpenCheck },
+    { title: "Quizzes", path: "/quizzes", icon: Presentation },
+  ],
+};
+
+function Sidebar({ user }: SidebarProps) {
   const [display, setDisplay] = useState("w-0");
   const pathname = usePathname();
+  const navigations = sidebarNavigations[user.role];
 
   const collaspe = () => {
     if (display == "w-0") {
@@ -24,20 +52,20 @@ function Sidebar({ navigations }: SidebarProps) {
   return (
     <aside
       className={clsx(
-        "transition-[width] max-w-[250px] relative z-10",
+        "transition-[width] max-w-[250px] relative z-10 min-h-screen",
         display
       )}
     >
       <Button
         onClick={collaspe}
-        className="right-0 top-32 rounded-none absolute translate-x-full"
+        className="-right-2 top-4 rounded-none absolute translate-x-full"
         size={"sm"}
         variant={"secondary"}
       >
         <Menu size={18} />
       </Button>
 
-      <div className="flex flex-col h-screen max-w-lg py-6 space-y-12 bg-background overflow-hidden">
+      <div className="flex flex-col h-full max-w-lg py-6 space-y-12 bg-background overflow-hidden">
         <header className="pl-8 pr-4">
           <h1 className="text-2xl font-bold">Logo</h1>
         </header>

@@ -1,14 +1,12 @@
 import httpClient from "@/lib/httpClient";
-import { QuestionType } from "@/types";
-import { z } from "zod";
-import { QuestionFormSchema } from "../schemas/quiz";
+import { TQuestionForm } from "@/model/question";
 
 export async function createQuestion(data: Record<string, any>) {
   return (await httpClient.post("/questions", data)).data;
 }
 
 export async function createManyQuestions(
-  data: z.infer<typeof QuestionFormSchema>,
+  data: TQuestionForm,
   id?: string | number
 ) {
   const transformedData = data.questions.map((question) => ({

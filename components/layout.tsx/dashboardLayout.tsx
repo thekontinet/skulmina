@@ -1,63 +1,19 @@
-"use client";
-
-import Sidebar from "@/components/sidebar";
-import useAuth from "@/hooks/useAuth";
-import { useState } from "react";
+import { TUser } from "@/model/user";
 import Navbar from "./navbar";
-import {
-  BookOpenCheck,
-  GraduationCap,
-  LayoutDashboard,
-  Presentation,
-  Users,
-} from "lucide-react";
-import Loader from "../ui/loader";
+import Sidebar from "../sidebar";
+import { redirect } from "next/navigation";
+import { getUser } from "@/app/(auth)/login/action";
 
-const navigations = {
-  admin: [
-    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { title: "Accounts", path: "/accounts", icon: Users },
-  ],
-  student: [
-    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { title: "Quizzes", path: "/quizzes", icon: Presentation },
-    { title: "Results", path: "/results", icon: GraduationCap },
-  ],
-  teacher: [
-    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { title: "Qestion Bank", path: "/questions", icon: BookOpenCheck },
-    { title: "Quizzes", path: "/quizzes", icon: Presentation },
-    { title: "Results", path: "/results", icon: GraduationCap },
-    { title: "zzzzz", path: "/results", icon: GraduationCap },
-  ],
-};
-
-const DashboardLayout = ({ children }: React.PropsWithChildren) => {
-  const [display, setDisplay] = useState("w-0");
-  const { logout, user } = useAuth({ middleware: "auth" });
-
-  const collaspe = () => {
-    if (display == "w-0") {
-      setDisplay("w-full");
-    } else {
-      setDisplay("w-0");
-    }
-  };
-
-  if (!user) {
-    return <Loader />;
-  }
+const DashboardLayout = async ({ children }: React.PropsWithChildren) => {
+  let user: TUser | null = await getUser();
 
   return (
     <div className="">
       <main className="flex">
-        <Sidebar navigations={navigations[user.role]} />
+        <Sidebar user={user!} />
         <section className="w-full">
-          <Navbar logout={logout} />
-          <header className="bg-primary h-56"></header>
-          <div className="-translate-y-48 mx-auto px-2 md:px-4 lg:px-12">
-            {children}
-          </div>
+          <Navbar />
+          <div className="mx-auto px-4">{children}</div>
         </section>
       </main>
     </div>

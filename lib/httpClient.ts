@@ -1,33 +1,28 @@
 import axios, { isAxiosError } from "axios";
+import { cookies } from "next/headers";
 import { UseFormSetError } from "react-hook-form";
+import { ZodError } from "zod";
 
 const httpClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_ENPOINT,
+  baseURL: process.env.API_ENPOINT,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
+  withCredentials: true,
 });
 
 httpClient.interceptors.request.use(function (config) {
-  if (undefined !== window && window.localStorage) {
-    const token = JSON.parse(window.localStorage.getItem("token") as string);
-    config.headers["Authorization"] = `Bearer ${token}`;
-  }
   return config;
 });
 
-export const handleValidationError = (
-  err: unknown,
-  setError: UseFormSetError<any>
-) => {
-  if (isAxiosError(err) && err.response?.status === 422) {
-    Object.keys(err.response.data.errors).forEach((key) => {
-      setError(key, {
-        message: err?.response?.data.errors[key][0] as string,
-      });
-    });
-  }
+export const handleValidationError = (error: ZodError) => {
+  const err = error.errors.map((error) => ({
+    path: error.path.at(0) as string,
+    message: error.message,
+  }));
+
+  return { errors: err };
 };
 
 export default httpClient;

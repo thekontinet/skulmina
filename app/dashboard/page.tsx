@@ -1,8 +1,8 @@
-"use client";
-
 import DashboardLayout from "@/components/layout.tsx/dashboardLayout";
+import { getUser } from "../(auth)/login/action";
+import { TUser } from "@/model/user";
 
-function Dashboard() {
+async function Dashboard() {
   return (
     <DashboardLayout>
       <div>hello</div>

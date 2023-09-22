@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ExamType } from "@/types";
 import ConfirmButton from "../widget/confirm-button";
 import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import useLoading from "@/hooks/useLoading";
@@ -14,18 +13,22 @@ import {
 } from "../ui/card";
 import Typography from "../ui/typography";
 import Link from "next/link";
+import { TQuiz } from "@/model/quiz";
 
 type QuizCardProps = {
-  quiz: ExamType;
+  quiz: TQuiz;
   onDelete?: (id: string | number) => Promise<any>;
 };
 
 const QuizCard = ({ quiz, onDelete }: QuizCardProps) => {
   const [deleteLoading, startDeleteLoading] = useLoading();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const stopLoading = startDeleteLoading();
-    if (onDelete) return onDelete(quiz.id).finally(() => stopLoading);
+    if (onDelete)
+      return onDelete(quiz.id).finally(() => {
+        stopLoading();
+      });
   };
 
   return (

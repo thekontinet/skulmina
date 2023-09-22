@@ -6,20 +6,16 @@ import {
 import { FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, X } from "lucide-react";
 import { z } from "zod";
-import { QuestionFormSchema } from "@/src/schemas/quiz";
 import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
+import { TQuestionForm } from "@/model/question";
 
 type MultiChoiceInputProps = {
-  form: UseFormReturn<z.infer<typeof QuestionFormSchema>, any, undefined>;
+  form: UseFormReturn<TQuestionForm, any, undefined>;
   index: number;
-  field?: FieldArrayWithId<
-    z.infer<typeof QuestionFormSchema>,
-    "questions",
-    "id"
-  >;
+  field?: FieldArrayWithId<TQuestionForm, "questions", "id">;
   name: string;
 };
 
@@ -34,31 +30,21 @@ function MultiChoiceInput({
   });
 
   return (
-    <>
+    <div>
       {fields.map((field, index) => (
-        <div key={field.id} className="flex items-center">
+        <div key={field.id} className="p-1 relative">
           <FormField
             name={`questions.${parentIndex}.${name}.${index}.value`}
             render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel htmlFor={field.name}>Option {index + 1}</FormLabel>
+              <FormItem className="w-full mt-4">
+                <FormMessage />
                 <div className="flex">
-                  <Button
-                    className="rounded-r-none border-r-none"
-                    variant={"outline"}
-                    type="button"
-                    onClick={() => remove(index)}
-                  >
-                    <Minus size={14} />
-                  </Button>
                   <Input
                     {...field}
                     id={field.name}
-                    className="rounded-l-none rounded-r-none border-x-0"
                     placeholder={`Choice ${index + 1}`}
                   />
                 </div>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -66,32 +52,42 @@ function MultiChoiceInput({
             key={field.id}
             name={`questions.${parentIndex}.${name}.${index}.is_correct`}
             render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel htmlFor={field.name}>correct</FormLabel>
-                <span className="flex border p-2 rounded-l-none">
-                  <Switch
-                    id={field.name}
-                    name={field.name}
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    placeholder={`Choice ${index + 1}`}
-                  />
-                </span>
+              <FormItem className="flex items-center">
+                <Checkbox
+                  className="mt-2"
+                  id={field.name}
+                  name={field.name}
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  placeholder={`Choice ${index + 1}`}
+                />
+                <FormLabel htmlFor={field.name} className="ml-2">
+                  Mark as correct
+                </FormLabel>
+                <button
+                  className="ml-auto text-xs flex items-center text-destructive"
+                  type="button"
+                  onClick={() => remove(index)}
+                >
+                  <X size={14} className="mr-1" /> Remove
+                </button>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
       ))}
-      <Button
-        className="w"
-        variant={"outline"}
-        type="button"
-        onClick={() => append({ value: "Option", is_correct: false })}
-      >
-        <Plus size={14} /> Add Option
-      </Button>
-    </>
+      <div className="flex mt-4">
+        <Button
+          className="ml-auto"
+          variant={"outline"}
+          type="button"
+          onClick={() => append({ value: "Option", is_correct: false })}
+        >
+          <Plus size={14} /> Add Option
+        </Button>
+      </div>
+    </div>
   );
 }
 

@@ -1,7 +1,5 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
-import { Metadata } from "next";
 import {
   Card,
   CardContent,
@@ -14,34 +12,35 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import z from "zod";
-import useAuth from "@/hooks/useAuth";
-import { LoginCredentials, LoginCredentialsError } from "@/types";
-import ValidationError from "@/components/ui/validation-error";
+import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { login } from "./action";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect } from "next/navigation";
+import { loginSchema } from "@/model/user";
 
-// export const metadata: Metadata = {
-//   title: "Login",
-// };
+/**
+ * Quizzes Page Component
+ * TODO: Add Sorting, Filter and Search to quiz table
+ */
 
 function Page() {
-  const [form, setForm] = useState<LoginCredentials>({
-    email: "",
-    password: "",
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
   });
 
-  const [errors, setErrors] = useState<LoginCredentialsError>();
+  const signIn = async (formdata: FormData) => {
+    const response = await login(formdata);
 
-  const { login } = useAuth({
-    middleware: "guest",
-    redirectIfAuthenticated: "/dashboard",
-  });
+    if (!response?.errors) {
+      redirect("/dashboard");
+      return;
+    }
 
-  const handleFormUpdate = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prevForm) => ({ ...prevForm, [name]: value }));
-  };
-
-  const onSubmit = (data: typeof form) => {
-    login({ setErrors, data });
+    response.errors.map(({ path, message }) =>
+      form.setError(path, { message })
+    );
   };
 
   return (
@@ -53,39 +52,37 @@ function Page() {
             <CardDescription>Enter your credentials to login</CardDescription>
           </CardHeader>
           <CardContent>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit(form);
-              }}
-              className="space-y-4"
-            >
-              <div>
-                <Label htmlFor="email" title="Email" />
-                <Input
-                  value={form?.email}
-                  onChange={handleFormUpdate}
+            <Form {...form}>
+              <form action={signIn}>
+                <FormField
                   name="email"
-                  placeholder="Email Address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label htmlFor="email">Email</Label>
+                      <Input {...field} placeholder="Email Address" />
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <ValidationError message={errors?.email} />
-              </div>
-              <div>
-                <Label htmlFor="password" title="Password" />
-                <Input
-                  value={form?.password}
-                  onChange={handleFormUpdate}
-                  type="password"
+                <FormField
                   name="password"
-                  placeholder="Password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        {...field}
+                        type="password"
+                        placeholder="Password"
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <ValidationError message={errors?.password} />
-              </div>
-
-              <div>
-                <Button>Login</Button>
-              </div>
-            </form>
+                <Button className="mt-4" size={"sm"}>
+                  Submit
+                </Button>
+              </form>
+            </Form>
           </CardContent>
           <CardFooter>
             <p className="ml-auto text-xs">

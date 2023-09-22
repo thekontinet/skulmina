@@ -3,32 +3,44 @@ import { Textarea } from "../ui/textarea";
 import { UseFormReturn, useFieldArray } from "react-hook-form";
 import { Button } from "../ui/button";
 import MultiChoiceInput from "../quiz/multi-choice-input";
-import { QuestionFormSchema } from "@/src/schemas/quiz";
 import { z } from "zod";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import Typography from "../ui/typography";
 import { Plus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { deleteQuizQuestion } from "@/app/quizzes/actions";
+import notify from "@/lib/notify";
+import ConfirmButton from "../widget/confirm-button";
+import { QuestionFormSchema, TQuestionForm } from "@/model/question";
 
 type QuestionFormProps = {
-  form: UseFormReturn<z.infer<typeof QuestionFormSchema>, any, undefined>;
+  form: UseFormReturn<TQuestionForm, any, undefined>;
   limit?: number;
+  onDelete?: (id: string | number) => Promise<void>;
 };
 
-function QuestionForm({ form, limit = 10 }: QuestionFormProps) {
+function QuestionForm({ form, limit = 10, onDelete }: QuestionFormProps) {
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "questions",
   });
 
+  const hasReachedQuestionsLimit = form.getValues().questions?.length >= limit;
+
   const addNewQuestionForm = () => {
-    if (form.getValues().questions.length >= limit) {
+    if (hasReachedQuestionsLimit) {
       return alert("Limit of questions exceeded");
     }
     append({
       description: "",
       options: [{ value: "", is_correct: false }],
     });
+  };
+
+  const handleRemove = async (index: number) => {
+    const question = form.getValues(`questions.${index}`);
+    if (question?.id && onDelete) await onDelete(question?.id);
+    remove(index);
   };
 
   return (
@@ -42,14 +54,14 @@ function QuestionForm({ form, limit = 10 }: QuestionFormProps) {
         >
           <CardHeader className="flex-row items-center">
             <Typography variant="h4">Question {1 + index}</Typography>
-            <Button
+            <ConfirmButton
               className="ml-auto block"
-              onClick={() => remove(index)}
+              onConfirm={() => handleRemove(index)}
               variant={"outline"}
               size={"sm"}
             >
               <X size={14} />
-            </Button>
+            </ConfirmButton>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -87,13 +99,15 @@ function QuestionForm({ form, limit = 10 }: QuestionFormProps) {
         </Card>
       ))}
 
-      <Button
-        onClick={addNewQuestionForm}
-        variant={"outline"}
-        className="w-full mt-4 border-dotted border py-8"
-      >
-        <Plus size={12} />
-      </Button>
+      {!hasReachedQuestionsLimit && (
+        <Button
+          onClick={addNewQuestionForm}
+          variant={"outline"}
+          className="w-full mt-4 border-dotted border py-8"
+        >
+          <Plus size={12} />
+        </Button>
+      )}
     </div>
   );
 }

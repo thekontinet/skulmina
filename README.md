@@ -43,7 +43,7 @@ To get started with Skulmina, follow these steps:
 
 Skulmina uses environment variables for configuration. You need to create a local configuration file based on the provided example:
 
-1. Copy the `.env.example` file to `.env.local`:
+1. Copy the `.env.example` file to `.env`:
 
    ```bash
    cp .env.example .env.local
@@ -51,11 +51,12 @@ Skulmina uses environment variables for configuration. You need to create a loca
 
 2. Open the `.env.local` file in your preferred text editor and set the `NEXT_PUBLIC_API_ENDPOINT` variable to:
 
-   ```bash
-   NEXT_PUBLIC_API_ENDPOINT=https://skuminia.rolomtech.com/api/v1
-   ```
+```bash
+API_ENPOINT=https://skuminia.rolomtech.com/api/v1
+NEXT_PUBLIC_API_ENPOINT=https://skuminia.rolomtech.com/api/v1
+```
 
-   Replace `https://skuminia.rolomtech.com/api/v1` with the actual API endpoint you want to use.
+Replace `https://skuminia.rolomtech.com/api/v1` with the actual API endpoint you want to use.
 
 ## 5. Installation
 
@@ -72,6 +73,19 @@ Now that you have completed the setup, you can run the Skulmina project locally 
 ```bash
 npm run dev
 ```
+
+### TODOs
+
+- admins can "create", "edit" and "delete" account for teachers and students
+- admins can "create", "edit" and "delete" courses
+- admins can assign courses to teachers
+- admins can enroll student into a course
+- teachers can "create", "edit" and "delete" quiz
+- teachers can add question to quiz
+- teachers can "create", "edit" and "delete" questions
+- studednts can take quiz
+- students can submit quiz
+- students can review attempted quiz
 
 This will start the development server, and you can access the application in your web browser at `http://localhost:3000`.
 

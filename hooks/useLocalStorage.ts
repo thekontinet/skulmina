@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-export function useLocalStorage(key: string, initialValue: any) {
+export const useLocalStorage = <T>(key: string, initialValue?: T) => {
   const isLocalStorageAvailable =
     typeof window !== "undefined" && window.localStorage;
 
-  const [storedValue, setStoredValue] = useState(() => {
+  const [storedValue, setStoredValue] = useState<T | null>(() => {
     if (isLocalStorageAvailable) {
       const item = window.localStorage.getItem(key) || "";
       return item ? JSON.parse(item) : initialValue;
@@ -14,9 +14,9 @@ export function useLocalStorage(key: string, initialValue: any) {
   });
 
   // Update the localStorage value when the state changes
-  const setValue = (value: string | Function) => {
+  const setValue = (value: T) => {
     if (isLocalStorageAvailable) {
-      const newValue = typeof value === "function" ? value(storedValue) : value;
+      const newValue = value;
       window.localStorage.setItem(key, JSON.stringify(newValue));
       setStoredValue(newValue);
     }
@@ -26,9 +26,9 @@ export function useLocalStorage(key: string, initialValue: any) {
   const removeValue = () => {
     if (isLocalStorageAvailable) {
       window.localStorage.removeItem(key);
-      setStoredValue(initialValue);
+      setStoredValue(null);
     }
   };
 
-  return [storedValue, setValue, removeValue];
-}
+  return { storedValue, setValue, removeValue };
+};

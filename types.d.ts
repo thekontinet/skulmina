@@ -1,3 +1,5 @@
+import { QuestionSchema } from "./model/quiz";
+
 export type UserCredentials = {
   name: string;
   email: string;
@@ -11,25 +13,8 @@ export type LoginCredentialsError = {
   password: string[] | undefined;
 };
 
-export type ExamType = {
-  id: number;
-  code: string;
-  user_id: number;
-  title: string;
-  description: string;
-  time_limit: number;
-  published_at: string | null;
-  questions?: string[];
-};
-
-export type QuestionType = {
-  id: number;
-  description: string;
-  options?: string[];
-  answers?: string[];
-};
-
 export type AccountType = {
+  id: string | number;
   name: string;
   email: string;
   password: string;
