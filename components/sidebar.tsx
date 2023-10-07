@@ -1,6 +1,7 @@
 "use client";
 import clsx from "clsx";
 import {
+  BookOpen,
   BookOpenCheck,
   GraduationCap,
   LayoutDashboard,
@@ -23,6 +24,7 @@ const sidebarNavigations = {
   admin: [
     { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     { title: "Accounts", path: "/accounts", icon: Users },
+    { title: "Courses", path: "/courses", icon: BookOpen },
   ],
   student: [
     { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },

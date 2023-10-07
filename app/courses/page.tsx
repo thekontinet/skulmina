@@ -1,3 +1,7 @@
+import DashboardLayout from "@/components/layout.tsx/dashboardLayout";
+import { Input } from "@/components/ui/input";
+import { Table, TableHead, TableHeader } from "@/components/ui/table";
+import Typography from "@/components/ui/typography";
 import React from "react";
 
 /**
@@ -9,7 +13,27 @@ import React from "react";
 type Props = {};
 
 function page({}: Props) {
-  return <div>page</div>;
+  const courses = [
+    { title: "HTML", teacherId: "001", courseCode: "900" },
+    { title: "CSS", teacherId: "013", courseCode: "960" },
+  ];
+  return (
+    <DashboardLayout>
+      <header className="flex-row items-center py-4">
+        <Typography variant="h4">Courses</Typography>
+      </header>
+      <Table>
+        <TableHeader>
+           <TableHead>
+            <Input type="checkbox"/>
+           </TableHead>
+           <TableHead>Course title</TableHead>
+           <TableHead>teacher id</TableHead>
+           <TableHead>code</TableHead>
+        </TableHeader>
+      </Table>
+    </DashboardLayout>
+  );
 }
 
 export default page;
