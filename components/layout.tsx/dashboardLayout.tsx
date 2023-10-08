@@ -1,50 +1,19 @@
-"use client";
-
-import Sidebar from "@/components/sidebar";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import useAuth from "@/hooks/useAuth";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { LogOut, Menu, Settings } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
+import { TUser } from "@/model/user";
 import Navbar from "./navbar";
-import clsx from "clsx";
-import { log } from "console";
+import Sidebar from "../sidebar";
+import { redirect } from "next/navigation";
+import { getUser } from "@/app/(auth)/login/action";
 
-const DashboardLayout = ({ children }: React.PropsWithChildren) => {
-  const [display, setDisplay] = useState("w-0");
-  const { logout } = useAuth({ middleware: "guest" });
-
-  const collaspe = () => {
-    if (display == "w-0") {
-      setDisplay("w-full");
-    } else {
-      setDisplay("w-0");
-    }
-  };
+const DashboardLayout = async ({ children }: React.PropsWithChildren) => {
+  let user: TUser | null = await getUser();
 
   return (
-    <div className="overflow-hidden">
+    <div className="">
       <main className="flex">
-        <div
-          className={clsx(
-            "overflow-hidden transition-[width] max-w-[250px]",
-            display
-          )}
-        >
-          <Sidebar />
-        </div>
+        <Sidebar user={user!} />
         <section className="w-full">
-          <Navbar collapse={collaspe} logout={logout} />
-          {children}
+          <Navbar />
+          <div className="mx-auto px-4">{children}</div>
         </section>
       </main>
     </div>
